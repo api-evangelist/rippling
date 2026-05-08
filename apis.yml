@@ -1,0 +1,29 @@
+aid: rippling
+url: https://raw.githubusercontent.com/api-evangelist/rippling/refs/heads/main/apis.yml
+name: Rippling
+x-type: company
+description: >-
+  Rippling is a workforce management platform combining HR, IT, and finance. The Rippling API exposes employees, payroll, devices, app provisioning, expenses, and SCIM for unified workforce automation.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - HR
+  - HCM
+  - IT
+  - Payroll
+  - Spend Management
+created: '2026-05-08'
+modified: '2026-05-08'
+specificationVersion: '0.19'
+apis: []
+common:
+  - type: Website
+    url: https://www.rippling.com/
+  - type: Plans
+    url: plans/rippling-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/rippling-rate-limits.yml
+  - type: FinOps
+    url: finops/rippling-finops.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
