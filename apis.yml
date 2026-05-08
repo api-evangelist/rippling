@@ -3,27 +3,317 @@ url: https://raw.githubusercontent.com/api-evangelist/rippling/refs/heads/main/a
 name: Rippling
 x-type: company
 description: >-
-  Rippling is a workforce management platform combining HR, IT, and finance. The Rippling API exposes employees, payroll, devices, app provisioning, expenses, and SCIM for unified workforce automation.
+  Rippling is a unified workforce platform spanning HR, IT, and Finance with
+  programmable APIs for employees, payroll, devices, apps, time tracking,
+  benefits, expenses, and SCIM identity provisioning.
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
   - HR
   - HCM
-  - IT
   - Payroll
+  - IT
+  - Identity
+  - SCIM
+  - Devices
   - Spend Management
 created: '2026-05-08'
 modified: '2026-05-08'
 specificationVersion: '0.19'
-apis: []
+apis:
+  - aid: rippling:rippling-platform-api
+    name: Rippling Platform API
+    tags:
+      - Platform
+      - HRIS
+      - Workforce
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+      - url: https://developer.rippling.com/docs/rippling-api
+        type: API Reference
+    description: >-
+      The Rippling Platform API exposes core HRIS resources — companies,
+      employees, departments, work locations, custom fields, employment types,
+      and compensation history — for partners building HR-data integrations.
+  - aid: rippling:rippling-employees-api
+    name: Rippling Employees API
+    tags:
+      - Employees
+      - Workers
+      - Profiles
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Read and write employee records — personal information, employment
+      details, manager hierarchy, work email, work location, and custom
+      employee fields — for active and terminated workers.
+  - aid: rippling:rippling-companies-api
+    name: Rippling Companies API
+    tags:
+      - Companies
+      - Tenants
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Retrieve company-level metadata, legal entities, business addresses,
+      and account-wide configuration scoped to the authenticated tenant.
+  - aid: rippling:rippling-departments-api
+    name: Rippling Departments API
+    tags:
+      - Departments
+      - Org Structure
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      List and manage departments and the hierarchical org structure used to
+      group employees and route approvals.
+  - aid: rippling:rippling-teams-api
+    name: Rippling Teams API
+    tags:
+      - Teams
+      - Org Structure
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Manage cross-functional teams that group employees independently of
+      the department hierarchy.
+  - aid: rippling:rippling-work-locations-api
+    name: Rippling Work Locations API
+    tags:
+      - Locations
+      - Offices
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Read and manage company work locations including office addresses
+      and remote-work designations referenced by employee records.
+  - aid: rippling:rippling-payroll-api
+    name: Rippling Payroll API
+    tags:
+      - Payroll
+      - Earnings
+      - Deductions
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Push earnings, deductions, and reimbursements into Rippling Payroll
+      for off-cycle and on-cycle pay runs, and read pay-history events.
+  - aid: rippling:rippling-time-off-api
+    name: Rippling Time Off API
+    tags:
+      - Time Off
+      - Leave
+      - PTO
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Submit and manage time-off requests, leave balances, and policies for
+      vacation, sick leave, and other absence categories.
+  - aid: rippling:rippling-time-tracking-api
+    name: Rippling Time Tracking API
+    tags:
+      - Time Tracking
+      - Timesheets
+      - Shifts
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Capture clock-in / clock-out events, hourly timesheets, breaks, and
+      shift schedules for hourly and shift-based workers.
+  - aid: rippling:rippling-benefits-api
+    name: Rippling Benefits API
+    tags:
+      - Benefits
+      - Insurance
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Retrieve employee benefits enrollments, dependents, and plan details
+      across health, dental, vision, and other insurance lines.
+  - aid: rippling:rippling-expenses-api
+    name: Rippling Expenses API
+    tags:
+      - Expenses
+      - Reimbursements
+      - Spend
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Submit and approve employee expense reports, attach receipts, and
+      reimburse approved expenses through Rippling Spend.
+  - aid: rippling:rippling-corporate-cards-api
+    name: Rippling Corporate Cards API
+    tags:
+      - Cards
+      - Spend
+      - Bill Pay
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Issue, manage, and reconcile corporate cards, spend limits, and
+      transactions for Rippling Spend customers.
+  - aid: rippling:rippling-bill-pay-api
+    name: Rippling Bill Pay API
+    tags:
+      - Bill Pay
+      - AP
+      - Invoices
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Manage vendor invoices, approvals, and payments through Rippling
+      Bill Pay for accounts-payable workflows.
+  - aid: rippling:rippling-recruiting-api
+    name: Rippling Recruiting API
+    tags:
+      - Recruiting
+      - ATS
+      - Candidates
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Sync candidates, applications, and offers between external ATS
+      platforms and Rippling's recruiting and onboarding flows.
+  - aid: rippling:rippling-onboarding-api
+    name: Rippling Onboarding API
+    tags:
+      - Onboarding
+      - Hires
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Trigger new-hire onboarding, capture personal details, distribute
+      offer letters and policy documents, and provision day-one access.
+  - aid: rippling:rippling-devices-api
+    name: Rippling Devices API
+    tags:
+      - Devices
+      - MDM
+      - IT
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Manage company-owned devices, MDM enrollment, ownership assignment,
+      and lifecycle status across macOS, Windows, iOS, and Android.
+  - aid: rippling:rippling-apps-api
+    name: Rippling Apps API
+    tags:
+      - Apps
+      - SaaS Management
+      - Provisioning
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Manage SaaS app provisioning, role assignment, and de-provisioning
+      across the Rippling Apps catalog for IT teams.
+  - aid: rippling:rippling-scim-api
+    name: Rippling SCIM API
+    tags:
+      - SCIM
+      - Identity
+      - Provisioning
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      SCIM 2.0 endpoints for inbound user, group, and role provisioning
+      from identity providers (Okta, Azure AD, Google) and outbound to
+      partner SaaS applications.
+  - aid: rippling:rippling-sso-api
+    name: Rippling SSO API
+    tags:
+      - SSO
+      - Identity
+      - SAML
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Configure SAML/OIDC single sign-on between Rippling as an IdP and
+      external service providers, plus SP integrations into Rippling.
+  - aid: rippling:rippling-custom-fields-api
+    name: Rippling Custom Fields API
+    tags:
+      - Custom Fields
+      - Metadata
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Define and read custom fields attached to employees, departments,
+      and other Rippling resources for tenant-specific metadata.
+  - aid: rippling:rippling-webhooks-api
+    name: Rippling Webhooks API
+    tags:
+      - Webhooks
+      - Events
+    properties:
+      - url: https://developer.rippling.com/
+        type: Documentation
+    description: >-
+      Subscribe to Rippling events (employee created/updated/terminated,
+      time-off approved, payroll finalized, device assigned) for near
+      real-time downstream integration.
 common:
   - type: Website
     url: https://www.rippling.com/
+  - type: Documentation
+    url: https://developer.rippling.com/
+  - type: API Reference
+    url: https://developer.rippling.com/docs/rippling-api
+  - type: Pricing
+    url: https://www.rippling.com/pricing
+  - type: Login
+    url: https://app.rippling.com/login
+  - type: Status
+    url: https://status.rippling.com/
+  - type: Blog
+    url: https://www.rippling.com/blog
+  - type: Support
+    url: https://support.rippling.com/
+  - type: GitHub Organization
+    url: https://github.com/Rippling
+  - type: Privacy Policy
+    url: https://www.rippling.com/privacy
+  - type: Terms of Service
+    url: https://www.rippling.com/terms
   - type: Plans
     url: plans/rippling-plans-pricing.yml
   - type: RateLimits
     url: rate-limits/rippling-rate-limits.yml
   - type: FinOps
     url: finops/rippling-finops.yml
+  - type: Features
+    data:
+      - Unified HR, IT, and Finance platform with composable products
+      - Per-employee-per-month pricing across all modules (custom-quoted)
+      - Platform API for HRIS data partners
+      - SCIM 2.0 inbound and outbound for IdP and SaaS provisioning
+      - Devices and MDM across macOS, Windows, iOS, Android
+      - Apps catalog for SaaS provisioning and de-provisioning
+      - Webhooks for HRIS, payroll, time-off, and device events
+      - OAuth2 Marketplace apps for partner integrations
+      - SAML / OIDC SSO as IdP and SP
+    sources:
+      - https://www.rippling.com/pricing
+      - https://developer.rippling.com/
+    updated: '2026-05-08'
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

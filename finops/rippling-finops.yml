@@ -5,22 +5,23 @@ provider: Rippling
 providerId: rippling
 created: '2026-05-08'
 modified: '2026-05-08'
-reconciled: false
+reconciled: true
 tags:
-- HR
-- HCM
-- IT
-- Payroll
-- Spend Management
-- FinOps
-- Cost Management
-- FOCUS
-description: FOCUS-aligned FinOps placeholder for Rippling. Pipeline will replace with the provider's
-  real billing-model details once researched.
-notes: Initial scaffold — billing model has not yet been reconciled.
+  - HR
+  - HCM
+  - IT
+  - Payroll
+  - Spend Management
+  - FinOps
+  - FOCUS
+description: >-
+  Rippling's billing model is per-employee-per-month subscription pricing
+  across composable HR, IT, and Finance products with custom-quoted enterprise
+  contracts. This artifact maps Rippling charges to FOCUS columns for FinOps
+  allocation across cost centers and product lines.
 sources:
-- https://www.rippling.com/
-- https://focus.finops.org/focus-specification/v1-3/
+  - https://www.rippling.com/pricing
+  - https://focus.finops.org/focus-specification/v1-3/
 alignedWith:
   framework: FinOps Foundation Framework
   frameworkUrl: https://www.finops.org/framework/
@@ -30,13 +31,14 @@ alignedWith:
 publisherName: Rippling
 serviceCategory: HR
 billingModel:
-  pricingCategory: To Be Reconciled
+  pricingCategory: Subscription Per Seat
   billingFrequency: Monthly
   billingCurrency: USD
   chargeCategories:
-  - Usage
-  - Purchase
-  - Adjustment
+    - Usage
+    - Purchase
+    - Adjustment
+    - Tax
 focusColumns:
   ServiceName: Rippling
   ServiceCategory: HR
@@ -46,22 +48,86 @@ focusColumns:
   BillingCurrency: USD
   ChargeCategory: Usage
 meters:
-- name: api_usage
-  description: Catch-all meter pending reconciliation against the provider's published metering.
-  unit: varies
-  aggregation: sum
-  dimensions:
-  - account
-  - resource
+  - name: platform_seats
+    description: Required Rippling Platform seats; foundation for every product.
+    unit: employee-month
+    aggregation: sum
+    dimensions:
+      - department
+      - cost_center
+  - name: hr_cloud_seats
+    description: HR Cloud (HRIS, time off, performance, learning) per-employee fees.
+    unit: employee-month
+    aggregation: sum
+    dimensions:
+      - department
+      - cost_center
+  - name: payroll_seats
+    description: US payroll per-employee fees plus tax-filing services.
+    unit: employee-month
+    aggregation: sum
+    dimensions:
+      - state
+      - cost_center
+  - name: global_payroll_seats
+    description: Native global payroll per-employee fees.
+    unit: employee-month
+    aggregation: sum
+    dimensions:
+      - country
+      - cost_center
+  - name: eor_seats
+    description: Employer-of-record seats with country-specific cost loadings.
+    unit: employee-month
+    aggregation: sum
+    dimensions:
+      - country
+      - cost_center
+  - name: it_seats
+    description: IT Cloud seats covering devices, MDM, apps, and identity.
+    unit: employee-month
+    aggregation: sum
+    dimensions:
+      - department
+      - cost_center
+  - name: spend_seats
+    description: Spend product seats (cards, expenses, bill pay).
+    unit: employee-month
+    aggregation: sum
+    dimensions:
+      - department
+      - cost_center
+  - name: recruiting_seats
+    description: Recruiting seats per active hiring user or per-employee model.
+    unit: employee-month
+    aggregation: sum
+    dimensions:
+      - department
+      - cost_center
+  - name: pass_through_costs
+    description: Statutory benefits, payroll taxes, EOR loadings, hardware purchases.
+    unit: events
+    aggregation: sum
+    dimensions:
+      - service
+      - country
 principles:
-- name: Visibility
-  description: Pull provider invoices or usage exports until a self-serve usage feed is documented.
-- name: Allocation
-  description: Tag invoice line items to consuming business units in your FinOps store.
-- name: Optimization
-  description: Levers depend on the provider's billing model; review at renewal once reconciled.
-- name: Accountability
-  description: Assign a contract owner to review billing against negotiated terms.
+  - name: Visibility
+    description: >-
+      Pull Rippling monthly invoices and product-line statements; match
+      seat counts to active employees in HRIS.
+  - name: Allocation
+    description: >-
+      Allocate seats by department, cost center, and country using HRIS
+      attributes pushed via Platform API or webhooks.
+  - name: Optimization
+    description: >-
+      Audit monthly which Rippling products each employee uses; remove
+      seats for unused products and renegotiate bundles at renewal.
+  - name: Accountability
+    description: >-
+      Designate per-product owners (HRBP, IT lead, Finance lead) and
+      review against negotiated MSA at renewal.
 maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+  - FN: Kin Lane
+    email: kin@apievangelist.com
