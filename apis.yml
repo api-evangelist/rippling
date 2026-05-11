@@ -314,6 +314,15 @@ common:
       - https://www.rippling.com/pricing
       - https://developer.rippling.com/
     updated: '2026-05-08'
+  - type: Integrations
+    url: https://www.rippling.com/platform/integrations
+integrations:
+  - name: Brokers
+  - name: Accountants
+  - name: VC Firms & Accelerators
+  - name: Tech Partners
+  - name: Service Partners
+  - name: Misclassification Quiz
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
