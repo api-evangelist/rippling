@@ -1,0 +1,383 @@
+asyncapi: 2.6.0
+info:
+  title: Rippling Partner Webhooks
+  description: >-
+    Rippling Partner Applications listed in the Rippling App Shop can register a
+    webhook URL to receive event-triggered notifications when relevant changes
+    occur in a customer's Rippling tenant. Rippling makes an HTTP POST to the
+    Webhook URL configured under Integration > Webhook > Webhook URL with a
+    form-encoded body containing event_name, company_id, company_primary_email,
+    and the resource id when applicable. Both unauthenticated and Bearer-token
+    authenticated webhooks are supported (Basic auth is not). Events are emitted
+    with an approximate five-minute delay, and partners can expect to receive
+    one or multiple events in certain situations. This AsyncAPI describes the
+    documented partner webhook surface only; the in-tenant Developer app
+    custom-object webhooks (Created, Updated, Deleted) are operator-configured
+    against tenant-specific custom objects and have no fixed event catalog, so
+    they are not enumerated as discrete messages here.
+  version: '1.0.0'
+  contact:
+    name: Rippling Partner Support
+    url: https://developer.rippling.com/
+    email: partner.support@rippling.com
+  license:
+    name: Proprietary
+  externalDocs:
+    description: Rippling Partner Webhooks Guide
+    url: https://developer.rippling.com/documentation/developer-portal/v2-guides/webhooks
+servers:
+  partner:
+    url: '{webhookUrl}'
+    protocol: https
+    description: >-
+      The partner-hosted webhook endpoint configured in the Rippling App Shop
+      integration settings (Integration > Webhook > Webhook URL). Rippling
+      delivers events to this URL via HTTP POST with an approximate five-minute
+      lag.
+    variables:
+      webhookUrl:
+        description: >-
+          Fully qualified HTTPS URL of the partner endpoint that will receive
+          Rippling webhook deliveries.
+    security:
+      - bearerAuth: []
+      - {}
+channels:
+  /:
+    description: >-
+      Single partner webhook channel. Rippling POSTs form-encoded event
+      notifications to the configured Webhook URL whenever one of the supported
+      Rippling tenant events occurs.
+    bindings:
+      http:
+        type: request
+        method: POST
+    publish:
+      operationId: receiveRipplingPartnerEvent
+      summary: Receive a partner webhook event from Rippling
+      description: >-
+        Rippling publishes form-encoded event notifications to the partner's
+        configured Webhook URL when one of the supported events fires inside a
+        customer tenant. Authentication, when configured, is delivered as a
+        Bearer token in the Authorization header provided by the partner during
+        app configuration.
+      message:
+        oneOf:
+          - $ref: '#/components/messages/EmployeeCreated'
+          - $ref: '#/components/messages/EmployeeUpdated'
+          - $ref: '#/components/messages/EmployeeDeleted'
+          - $ref: '#/components/messages/EmployeeHired'
+          - $ref: '#/components/messages/EmployeeTerminated'
+          - $ref: '#/components/messages/GroupCreated'
+          - $ref: '#/components/messages/GroupUpdated'
+          - $ref: '#/components/messages/GroupDeleted'
+          - $ref: '#/components/messages/CompanyUpdated'
+          - $ref: '#/components/messages/CompanyDeleted'
+          - $ref: '#/components/messages/CustomInfoFieldCreated'
+          - $ref: '#/components/messages/CustomInfoFieldUpdated'
+          - $ref: '#/components/messages/CustomInfoFieldDeleted'
+          - $ref: '#/components/messages/FourOhOneKDeductionsUpdated'
+          - $ref: '#/components/messages/LeaveRequestCreated'
+          - $ref: '#/components/messages/LeaveRequestUpdated'
+          - $ref: '#/components/messages/LeaveRequestDeleted'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Optional Bearer token authentication. Partners may supply Rippling with
+        a static bearer token during integration configuration; Rippling then
+        attaches it as Authorization: Bearer <TOKEN> on every webhook delivery.
+        Basic authentication is not supported.
+  messages:
+    EmployeeCreated:
+      name: employee.created
+      title: Employee Created
+      summary: >-
+        Sent when an employee has been provisioned access to the partner app in
+        Rippling. Recommended event for user-management integrations.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/EmployeeEventPayload'
+    EmployeeUpdated:
+      name: employee.updated
+      title: Employee Updated
+      summary: >-
+        Sent when an employee already provisioned to the partner app has
+        information changed or updated on the employee object.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/EmployeeEventPayload'
+    EmployeeDeleted:
+      name: employee.deleted
+      title: Employee Deleted
+      summary: >-
+        Sent when an employee has had their access removed from the partner app
+        in Rippling, whether through termination, access-rule changes, or
+        manual admin removal. Recommended event for user-management
+        integrations.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/EmployeeEventPayload'
+    EmployeeHired:
+      name: employee.hired
+      title: Employee Hired
+      summary: >-
+        Sent when an employee has been hired into a company in Rippling. A
+        hired employee is not necessarily provisioned to the partner app — that
+        depends on the configured Access Rules.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/EmployeeEventPayload'
+    EmployeeTerminated:
+      name: employee.terminated
+      title: Employee Terminated
+      summary: >-
+        Sent when an employee has been terminated from a company in Rippling.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/EmployeeEventPayload'
+    GroupCreated:
+      name: group.created
+      title: Group Created
+      summary: >-
+        Sent when a group has been created in the customer's Rippling tenant.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/GroupEventPayload'
+    GroupUpdated:
+      name: group.updated
+      title: Group Updated
+      summary: >-
+        Sent when a group has been updated in the customer's Rippling tenant.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/GroupEventPayload'
+    GroupDeleted:
+      name: group.deleted
+      title: Group Deleted
+      summary: >-
+        Sent when a group has been deleted in the customer's Rippling tenant.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/GroupEventPayload'
+    CompanyUpdated:
+      name: company.updated
+      title: Company Updated
+      summary: >-
+        Sent when company-level information has been updated in Rippling.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/CompanyEventPayload'
+    CompanyDeleted:
+      name: company.deleted
+      title: Company Deleted
+      summary: >-
+        Sent when a Rippling customer has uninstalled the partner app. The id
+        field equals the company_id in this case.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/CompanyEventPayload'
+    CustomInfoFieldCreated:
+      name: custom_info_field.created
+      title: Custom Info Field Created
+      summary: >-
+        Sent when a new custom info field has been created in the customer's
+        Rippling tenant.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/BaseEventPayload'
+    CustomInfoFieldUpdated:
+      name: custom_info_field.updated
+      title: Custom Info Field Updated
+      summary: >-
+        Sent when a custom info field has been updated in the customer's
+        Rippling tenant.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/BaseEventPayload'
+    CustomInfoFieldDeleted:
+      name: custom_info_field.deleted
+      title: Custom Info Field Deleted
+      summary: >-
+        Sent when a custom info field has been deleted in the customer's
+        Rippling tenant.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/BaseEventPayload'
+    FourOhOneKDeductionsUpdated:
+      name: 401_deductions.updated
+      title: 401(k) Deductions Updated
+      summary: >-
+        Sent when 401(k) deduction information has been updated in the
+        customer's Rippling tenant.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/BaseEventPayload'
+    LeaveRequestCreated:
+      name: leave_request.created
+      title: Leave Request Created
+      summary: >-
+        Sent when a leave request has been created, regardless of status. Fires
+        for pre-approved admin-created requests and for pending employee
+        requests alike.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/LeaveRequestEventPayload'
+    LeaveRequestUpdated:
+      name: leave_request.updated
+      title: Leave Request Updated
+      summary: >-
+        Sent when a leave request has been updated. Updates include changes to
+        startDate, endDate, numMinutes, startDateStartTime, endDateEndTime, or
+        status.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/LeaveRequestEventPayload'
+    LeaveRequestDeleted:
+      name: leave_request.deleted
+      title: Leave Request Deleted
+      summary: >-
+        Sent when a leave request has been deleted or cancelled, regardless of
+        prior status, whether by admin or employee.
+      contentType: application/x-www-form-urlencoded
+      payload:
+        $ref: '#/components/schemas/LeaveRequestEventPayload'
+  schemas:
+    BaseEventPayload:
+      type: object
+      description: >-
+        Form-encoded base payload shared by every Rippling partner webhook
+        delivery. Rippling POSTs application/x-www-form-urlencoded parameters
+        — fields listed below appear as repeated form parameters in the body.
+      required:
+        - event_name
+        - company_id
+        - company_primary_email
+      properties:
+        event_name:
+          type: string
+          description: The name of the event being delivered.
+          enum:
+            - employee.created
+            - employee.updated
+            - employee.deleted
+            - employee.hired
+            - employee.terminated
+            - group.created
+            - group.updated
+            - group.deleted
+            - company.updated
+            - company.deleted
+            - custom_info_field.created
+            - custom_info_field.updated
+            - custom_info_field.deleted
+            - 401_deductions.updated
+            - leave_request.created
+            - leave_request.updated
+            - leave_request.deleted
+        company_id:
+          type: string
+          description: Rippling ID of the company, as a string.
+        company_primary_email:
+          type: string
+          format: email
+          description: Email address of the primary company admin.
+        id:
+          type: string
+          description: >-
+            Rippling ID of the employee, group, custom info field, leave
+            request, or other resource the event refers to, if applicable.
+      example:
+        event_name: company.updated
+        id: 656992806f26d6caeaffff9f
+        company_id: 656992806f26d6caeaffff9f
+        company_primary_email: ripplingpartnerms+testcompany123@gmail.com
+    EmployeeEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventPayload'
+        - type: object
+          description: >-
+            Form-encoded payload for employee.* events. The id field is the
+            Rippling employee id.
+          properties:
+            event_name:
+              type: string
+              enum:
+                - employee.created
+                - employee.updated
+                - employee.deleted
+                - employee.hired
+                - employee.terminated
+            id:
+              type: string
+              description: Rippling employee id.
+          example:
+            event_name: employee.created
+            id: 656992816f26d6caea00072c
+            company_id: 656992806f26d6caeaffff9f
+            company_primary_email: ripplingpartnerms+testcompany123@gmail.com
+    GroupEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventPayload'
+        - type: object
+          description: >-
+            Form-encoded payload for group.* events. The id field is the
+            Rippling group id.
+          properties:
+            event_name:
+              type: string
+              enum:
+                - group.created
+                - group.updated
+                - group.deleted
+            id:
+              type: string
+              description: Rippling group id.
+          example:
+            event_name: group.created
+            id: 6617fe6d45810a5e2fa0f6dd
+            company_id: 656992806f26d6caeaffff9f
+            company_primary_email: ripplingpartnerms+testcompany123@gmail.com
+    CompanyEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventPayload'
+        - type: object
+          description: >-
+            Form-encoded payload for company.* events. For company.deleted the
+            id field matches company_id and indicates the customer has
+            uninstalled the partner app.
+          properties:
+            event_name:
+              type: string
+              enum:
+                - company.updated
+                - company.deleted
+            id:
+              type: string
+              description: Rippling company id (equal to company_id).
+          example:
+            event_name: company.deleted
+            id: 656992806f26d6caeaffff9f
+            company_id: 656992806f26d6caeaffff9f
+            company_primary_email: ripplingpartnerms+testcompany123@gmail.com
+    LeaveRequestEventPayload:
+      allOf:
+        - $ref: '#/components/schemas/BaseEventPayload'
+        - type: object
+          description: >-
+            Form-encoded payload for leave_request.* events. The id field is
+            the Rippling leave request id. Updates fire on changes to
+            startDate, endDate, numMinutes, startDateStartTime, endDateEndTime,
+            or status.
+          properties:
+            event_name:
+              type: string
+              enum:
+                - leave_request.created
+                - leave_request.updated
+                - leave_request.deleted
+            id:
+              type: string
+              description: Rippling leave request id.

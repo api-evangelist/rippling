@@ -17,7 +17,7 @@ tags:
   - Devices
   - Spend Management
 created: '2026-05-08'
-modified: '2026-05-08'
+modified: '2026-05-30'
 specificationVersion: '0.19'
 apis:
   - aid: rippling:rippling-platform-api
@@ -266,6 +266,12 @@ apis:
     properties:
       - url: https://developer.rippling.com/
         type: Documentation
+      - url: https://developer.rippling.com/documentation/developer-portal/v2-guides/webhooks
+        type: Webhooks
+      - url: https://developer.rippling.com/documentation/rippling-platform/developer/webhooks
+        type: Webhooks
+      - url: asyncapi/rippling-webhooks-asyncapi.yml
+        type: AsyncAPI
     description: >-
       Subscribe to Rippling events (employee created/updated/terminated,
       time-off approved, payroll finalized, device assigned) for near
