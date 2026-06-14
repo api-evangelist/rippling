@@ -1,0 +1,1046 @@
+"""
+Rippling GraphQL Schema — Conceptual
+Covers: HRIS, Payroll, Benefits, Time Off, Devices, Apps, Identity, Spend, Platform
+Source: https://developer.rippling.com/docs/rippling-api
+"""
+
+scalar DateTime
+scalar Date
+scalar Money
+scalar JSON
+
+# ─── Pagination ─────────────────────────────────────────────────────────────
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+# ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum EmploymentStatus {
+  ACTIVE
+  TERMINATED
+  ON_LEAVE
+  PENDING
+}
+
+enum EmploymentType {
+  FULL_TIME
+  PART_TIME
+  CONTRACTOR
+  INTERN
+  TEMP
+}
+
+enum PayScheduleFrequency {
+  WEEKLY
+  BIWEEKLY
+  SEMIMONTHLY
+  MONTHLY
+}
+
+enum PayType {
+  SALARY
+  HOURLY
+}
+
+enum DeductionType {
+  PRE_TAX
+  POST_TAX
+  EMPLOYER
+}
+
+enum TimeOffStatus {
+  PENDING
+  APPROVED
+  DENIED
+  CANCELLED
+}
+
+enum DeviceStatus {
+  ENROLLED
+  PENDING
+  DECOMMISSIONED
+  RETIRED
+}
+
+enum DevicePlatform {
+  MACOS
+  WINDOWS
+  IOS
+  ANDROID
+  LINUX
+}
+
+enum AppAccessStatus {
+  ACTIVE
+  DEPROVISIONED
+  PENDING
+}
+
+enum WebhookStatus {
+  ACTIVE
+  DISABLED
+}
+
+enum ExpenseStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  REJECTED
+  REIMBURSED
+}
+
+enum CardStatus {
+  ACTIVE
+  FROZEN
+  CANCELLED
+}
+
+enum OnboardingStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETE
+}
+
+enum OffboardingStatus {
+  SCHEDULED
+  IN_PROGRESS
+  COMPLETE
+}
+
+enum TaskStatus {
+  PENDING
+  COMPLETE
+  SKIPPED
+}
+
+# ─── HRIS Core ───────────────────────────────────────────────────────────────
+
+"""Core employee record linking all workforce data."""
+type Employee {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  displayName: String
+  workEmail: String
+  personalEmail: String
+  employmentStatus: EmploymentStatus!
+  employmentType: EmploymentType
+  startDate: Date
+  terminationDate: Date
+  department: Department
+  team: TeamMember
+  manager: Employee
+  reports: [Employee!]
+  location: Location
+  legalEntity: LegalEntity
+  profile: EmployeeProfile
+  compensation: Compensation
+  paySchedule: PaySchedule
+  benefits: [BenefitEnrollment!]
+  timeOffBalances: [TimeOffBalance!]
+  devices: [ManagedDevice!]
+  appAccess: [AppAccess!]
+  customFields: [CustomField!]
+  onboarding: Onboarding
+  offboarding: Offboarding
+  hrisProfile: HRISProfile
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type EmployeeConnection {
+  edges: [EmployeeEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int
+}
+
+type EmployeeEdge {
+  node: Employee!
+  cursor: String!
+}
+
+"""Extended personal and job details for an employee."""
+type EmployeeProfile {
+  id: ID!
+  employee: Employee!
+  pronouns: String
+  preferredName: String
+  dateOfBirth: Date
+  phoneNumber: String
+  homeAddress: Address
+  jobTitle: String
+  level: String
+  flsaStatus: String
+  workerType: String
+  visaType: String
+  visaExpiration: Date
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Department grouping employees within a company."""
+type Department {
+  id: ID!
+  name: String!
+  parentDepartment: Department
+  childDepartments: [Department!]
+  employees: [Employee!]
+  headCount: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Cross-functional team independent of department hierarchy."""
+type TeamMember {
+  id: ID!
+  team: WorkGroup!
+  employee: Employee!
+  role: String
+  joinedAt: Date
+}
+
+"""Named work group or team."""
+type WorkGroup {
+  id: ID!
+  name: String!
+  description: String
+  members: [TeamMember!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Node in the organizational hierarchy tree."""
+type OrgNode {
+  id: ID!
+  name: String!
+  type: String
+  parent: OrgNode
+  children: [OrgNode!]
+  employees: [Employee!]
+}
+
+"""Physical or remote work location."""
+type Location {
+  id: ID!
+  name: String!
+  address: Address
+  isRemote: Boolean!
+  timeZone: String
+  country: String
+  state: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Street address."""
+type Address {
+  line1: String
+  line2: String
+  city: String
+  state: String
+  postalCode: String
+  country: String
+}
+
+"""Legal entity (company subsidiary or EOR entity) within Rippling."""
+type LegalEntity {
+  id: ID!
+  name: String!
+  ein: String
+  country: String!
+  state: String
+  entityType: String
+  employees: [Employee!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Business entity metadata for the Rippling account."""
+type BusinessEntity {
+  id: ID!
+  legalName: String!
+  dba: String
+  website: String
+  ein: String
+  address: Address
+  legalEntities: [LegalEntity!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Tenant-defined custom field attached to a resource."""
+type CustomField {
+  id: ID!
+  name: String!
+  fieldType: String!
+  resourceType: String!
+  value: JSON
+  isRequired: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Report definition (saved query) in Rippling Reports."""
+type Report {
+  id: ID!
+  name: String!
+  description: String
+  resourceType: String
+  columns: [String!]
+  filters: JSON
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─── Compensation ─────────────────────────────────────────────────────────────
+
+"""An employee's active and historical compensation record."""
+type Compensation {
+  id: ID!
+  employee: Employee!
+  payType: PayType!
+  annualSalary: Money
+  hourlyRate: Money
+  currency: String!
+  effectiveDate: Date!
+  paySchedule: PaySchedule
+  history: [Compensation!]
+  createdAt: DateTime!
+}
+
+# ─── Payroll ──────────────────────────────────────────────────────────────────
+
+"""Recurring pay schedule defining run frequency."""
+type PaySchedule {
+  id: ID!
+  name: String!
+  frequency: PayScheduleFrequency!
+  legalEntity: LegalEntity
+  payPeriods: [PayPeriod!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A single pay period within a pay schedule."""
+type PayPeriod {
+  id: ID!
+  paySchedule: PaySchedule!
+  startDate: Date!
+  endDate: Date!
+  payDate: Date!
+  payroll: Payroll
+}
+
+"""A processed or in-flight payroll run."""
+type Payroll {
+  id: ID!
+  payPeriod: PayPeriod!
+  status: String!
+  totalGross: Money
+  totalNet: Money
+  totalTax: Money
+  totalDeductions: Money
+  payChecks: [PayCheck!]
+  processedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An individual employee paycheck within a payroll run."""
+type PayCheck {
+  id: ID!
+  payroll: Payroll!
+  employee: Employee!
+  grossPay: Money!
+  netPay: Money!
+  earnings: [EarningType!]
+  deductions: [Deduction!]
+  taxes: [Tax!]
+  directDeposits: [DirectDeposit!]
+  payDate: Date!
+  createdAt: DateTime!
+}
+
+"""An earning line item (regular, overtime, bonus, commission, etc.)."""
+type EarningType {
+  id: ID!
+  name: String!
+  code: String
+  amount: Money!
+  hours: Float
+  rate: Money
+  isTaxable: Boolean!
+}
+
+"""A deduction line item from an employee paycheck."""
+type Deduction {
+  id: ID!
+  name: String!
+  code: String
+  type: DeductionType!
+  amount: Money!
+  employerAmount: Money
+  benefitPlan: BenefitPlan
+}
+
+"""A tax line item withheld from a paycheck."""
+type Tax {
+  id: ID!
+  name: String!
+  jurisdiction: String
+  amount: Money!
+  employerAmount: Money
+  taxType: String
+}
+
+"""Direct deposit allocation for an employee paycheck."""
+type DirectDeposit {
+  id: ID!
+  payCheck: PayCheck!
+  bankAccount: BankAccount!
+  amount: Money
+  percentage: Float
+  isRemainder: Boolean!
+}
+
+"""A bank account linked for direct deposit."""
+type BankAccount {
+  id: ID!
+  employee: Employee!
+  bankName: String
+  accountType: String
+  lastFour: String!
+  routingNumber: String
+  isVerified: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─── Benefits ─────────────────────────────────────────────────────────────────
+
+"""A benefit plan offered by the company."""
+type BenefitPlan {
+  id: ID!
+  name: String!
+  planType: String!
+  carrier: String
+  planId: String
+  coverageTiers: [String!]
+  employeePremium: Money
+  employerPremium: Money
+  effectiveDate: Date
+  terminationDate: Date
+  enrollments: [BenefitEnrollment!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An employee's enrollment in a specific benefit plan."""
+type BenefitEnrollment {
+  id: ID!
+  employee: Employee!
+  benefitPlan: BenefitPlan!
+  coverageTier: String!
+  effectiveDate: Date!
+  terminationDate: Date
+  employeePremium: Money
+  employerPremium: Money
+  status: String!
+  dependents: [BenefitEmployee!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A dependent or additional covered member on a benefit enrollment."""
+type BenefitEmployee {
+  id: ID!
+  enrollment: BenefitEnrollment!
+  firstName: String!
+  lastName: String!
+  relationship: String!
+  dateOfBirth: Date
+  ssn: String
+}
+
+# ─── Time Off ─────────────────────────────────────────────────────────────────
+
+"""Category of time off (vacation, sick, parental, etc.)."""
+type TimeOffType {
+  id: ID!
+  name: String!
+  code: String
+  isPaid: Boolean!
+  leavePolicy: LeavePolicy
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Company policy governing accrual and usage of a time-off type."""
+type LeavePolicy {
+  id: ID!
+  name: String!
+  timeOffType: TimeOffType!
+  accrualMethod: String
+  accrualRate: Float
+  maxAccrual: Float
+  carryoverLimit: Float
+  waitPeriodDays: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A time-off request submitted by an employee."""
+type TimeOffRequest {
+  id: ID!
+  employee: Employee!
+  timeOffType: TimeOffType!
+  status: TimeOffStatus!
+  startDate: Date!
+  endDate: Date!
+  totalDays: Float!
+  note: String
+  approver: Employee
+  approvedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type TimeOff {
+  id: ID!
+  employee: Employee!
+  requests: [TimeOffRequest!]
+  balances: [TimeOffBalance!]
+}
+
+"""An employee's accrued balance for a time-off type."""
+type TimeOffBalance {
+  id: ID!
+  employee: Employee!
+  timeOffType: TimeOffType!
+  balance: Float!
+  accrued: Float!
+  used: Float!
+  pending: Float!
+  asOf: Date!
+}
+
+# ─── Devices ──────────────────────────────────────────────────────────────────
+
+"""A company-owned device managed via Rippling MDM."""
+type ManagedDevice {
+  id: ID!
+  serialNumber: String!
+  platform: DevicePlatform!
+  model: String
+  osVersion: String
+  status: DeviceStatus!
+  assignedEmployee: Employee
+  enrolledAt: DateTime
+  lastCheckedIn: DateTime
+  applications: [DeviceApplication!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An application installed on a managed device."""
+type DeviceApplication {
+  id: ID!
+  device: ManagedDevice!
+  name: String!
+  version: String
+  bundleId: String
+  installedAt: DateTime
+  isManaged: Boolean!
+}
+
+# ─── Apps and Access ──────────────────────────────────────────────────────────
+
+"""A SaaS application in the Rippling apps catalog."""
+type CompanyApp {
+  id: ID!
+  name: String!
+  slug: String
+  category: String
+  logoUrl: String
+  ssoProvider: SSOProvider
+  subscription: AppSubscription
+  accessRecords: [AppAccess!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An employee's provisioned access to a company app."""
+type AppAccess {
+  id: ID!
+  employee: Employee!
+  companyApp: CompanyApp!
+  status: AppAccessStatus!
+  role: String
+  provisionedAt: DateTime
+  deprovisionedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""SaaS subscription record for a company app."""
+type AppSubscription {
+  id: ID!
+  companyApp: CompanyApp!
+  licenseCount: Int
+  usedLicenses: Int
+  monthlySpend: Money
+  renewalDate: Date
+  vendor: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─── Identity ─────────────────────────────────────────────────────────────────
+
+"""An SSO provider configuration (SAML or OIDC)."""
+type SSOProvider {
+  id: ID!
+  name: String!
+  protocol: String!
+  entityId: String
+  metadataUrl: String
+  acsUrl: String
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An upstream identity provider federated into Rippling."""
+type IdentityProvider {
+  id: ID!
+  name: String!
+  type: String!
+  domain: String
+  ssoProvider: SSOProvider
+  workosConnection: WorkosConnection
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A WorkOS directory or SSO connection backing an identity provider."""
+type WorkosConnection {
+  id: ID!
+  workosId: String!
+  connectionType: String!
+  identityProvider: IdentityProvider
+  state: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An employee's profile as seen by the HRIS layer (used for IdP linking)."""
+type HRISProfile {
+  id: ID!
+  employee: Employee!
+  externalId: String
+  userName: String
+  groups: [String!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A permission granted to a role or directly to an employee."""
+type Permission {
+  id: ID!
+  name: String!
+  resource: String!
+  action: String!
+  scope: String
+  createdAt: DateTime!
+}
+
+"""A role grouping one or more permissions."""
+type Role {
+  id: ID!
+  name: String!
+  description: String
+  permissions: [Permission!]
+  assignedEmployees: [Employee!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An OAuth token issued to a partner integration."""
+type OAuthToken {
+  id: ID!
+  clientId: String!
+  scopes: [String!]!
+  issuedAt: DateTime!
+  expiresAt: DateTime
+  revokedAt: DateTime
+  integration: Integration
+}
+
+"""A registered third-party integration with the Rippling platform."""
+type Integration {
+  id: ID!
+  name: String!
+  description: String
+  category: String
+  logoUrl: String
+  oauthTokens: [OAuthToken!]
+  webhooks: [Webhook!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─── Onboarding / Offboarding ─────────────────────────────────────────────────
+
+"""Onboarding workflow instance for a new hire."""
+type Onboarding {
+  id: ID!
+  employee: Employee!
+  status: OnboardingStatus!
+  startDate: Date
+  checklist: Checklist
+  tasks: [Task!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""Offboarding workflow instance for a departing employee."""
+type Offboarding {
+  id: ID!
+  employee: Employee!
+  status: OffboardingStatus!
+  lastDay: Date
+  checklist: Checklist
+  tasks: [Task!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A checklist grouping multiple tasks in a workflow."""
+type Checklist {
+  id: ID!
+  name: String!
+  tasks: [Task!]
+  completedCount: Int!
+  totalCount: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An individual task within an onboarding or offboarding checklist."""
+type Task {
+  id: ID!
+  title: String!
+  description: String
+  status: TaskStatus!
+  assignee: Employee
+  dueDate: Date
+  completedAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─── Spend ────────────────────────────────────────────────────────────────────
+
+"""An employee expense report grouping individual expenses."""
+type ExpenseReport {
+  id: ID!
+  employee: Employee!
+  title: String!
+  status: ExpenseStatus!
+  totalAmount: Money!
+  currency: String!
+  expenses: [Expense!]
+  submittedAt: DateTime
+  approvedAt: DateTime
+  reimbursedAt: DateTime
+  approver: Employee
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""An individual expense line item within an expense report."""
+type Expense {
+  id: ID!
+  expenseReport: ExpenseReport!
+  merchant: String
+  category: String
+  amount: Money!
+  currency: String!
+  expenseDate: Date!
+  receiptUrl: String
+  note: String
+  creditCard: CreditCard
+  status: ExpenseStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A corporate credit card assigned to an employee."""
+type CreditCard {
+  id: ID!
+  employee: Employee!
+  lastFour: String!
+  cardholderName: String
+  status: CardStatus!
+  spendLimit: Money
+  currentBalance: Money
+  issuedAt: DateTime
+  expenses: [Expense!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+# ─── Webhooks and Events ──────────────────────────────────────────────────────
+
+"""A registered webhook endpoint for Rippling event delivery."""
+type Webhook {
+  id: ID!
+  url: String!
+  status: WebhookStatus!
+  events: [String!]!
+  secret: String
+  integration: Integration
+  lastDeliveredAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+"""A workflow event delivered to a webhook endpoint."""
+type WorkflowEvent {
+  id: ID!
+  eventType: String!
+  resourceType: String!
+  resourceId: String!
+  payload: JSON!
+  webhook: Webhook
+  deliveredAt: DateTime
+  retryCount: Int!
+  createdAt: DateTime!
+}
+
+# ─── Org Chart ────────────────────────────────────────────────────────────────
+
+"""The full organizational chart rooted at the company level."""
+type OrgChart {
+  id: ID!
+  company: BusinessEntity!
+  root: OrgNode!
+  depth: Int
+  updatedAt: DateTime!
+}
+
+# ─── Root Query ───────────────────────────────────────────────────────────────
+
+type Query {
+  # Employee
+  employee(id: ID!): Employee
+  employees(
+    first: Int
+    after: String
+    status: EmploymentStatus
+    departmentId: ID
+    locationId: ID
+  ): EmployeeConnection!
+
+  # HRIS
+  department(id: ID!): Department
+  departments(first: Int, after: String): [Department!]!
+  workGroup(id: ID!): WorkGroup
+  workGroups(first: Int, after: String): [WorkGroup!]!
+  location(id: ID!): Location
+  locations(first: Int, after: String): [Location!]!
+  legalEntity(id: ID!): LegalEntity
+  legalEntities(first: Int, after: String): [LegalEntity!]!
+  businessEntity: BusinessEntity
+  orgChart: OrgChart
+  customFields(resourceType: String): [CustomField!]!
+  report(id: ID!): Report
+  reports(first: Int, after: String): [Report!]!
+
+  # Payroll
+  paySchedule(id: ID!): PaySchedule
+  paySchedules(first: Int, after: String): [PaySchedule!]!
+  payPeriod(id: ID!): PayPeriod
+  payroll(id: ID!): Payroll
+  payrolls(payScheduleId: ID, first: Int, after: String): [Payroll!]!
+  payCheck(id: ID!): PayCheck
+
+  # Benefits
+  benefitPlan(id: ID!): BenefitPlan
+  benefitPlans(first: Int, after: String): [BenefitPlan!]!
+  benefitEnrollment(id: ID!): BenefitEnrollment
+
+  # Time Off
+  timeOffType(id: ID!): TimeOffType
+  timeOffTypes(first: Int, after: String): [TimeOffType!]!
+  leavePolicy(id: ID!): LeavePolicy
+  leavePolicies(first: Int, after: String): [LeavePolicy!]!
+  timeOffRequest(id: ID!): TimeOffRequest
+  timeOffRequests(
+    employeeId: ID
+    status: TimeOffStatus
+    first: Int
+    after: String
+  ): [TimeOffRequest!]!
+
+  # Devices
+  managedDevice(id: ID!): ManagedDevice
+  managedDevices(
+    platform: DevicePlatform
+    status: DeviceStatus
+    first: Int
+    after: String
+  ): [ManagedDevice!]!
+
+  # Apps
+  companyApp(id: ID!): CompanyApp
+  companyApps(first: Int, after: String): [CompanyApp!]!
+  appAccess(employeeId: ID!, appId: ID!): AppAccess
+
+  # Identity
+  ssoProvider(id: ID!): SSOProvider
+  ssoProviders(first: Int, after: String): [SSOProvider!]!
+  identityProvider(id: ID!): IdentityProvider
+  identityProviders(first: Int, after: String): [IdentityProvider!]!
+  role(id: ID!): Role
+  roles(first: Int, after: String): [Role!]!
+  integration(id: ID!): Integration
+  integrations(first: Int, after: String): [Integration!]!
+
+  # Spend
+  expenseReport(id: ID!): ExpenseReport
+  expenseReports(
+    employeeId: ID
+    status: ExpenseStatus
+    first: Int
+    after: String
+  ): [ExpenseReport!]!
+  creditCard(id: ID!): CreditCard
+  creditCards(employeeId: ID, status: CardStatus): [CreditCard!]!
+
+  # Webhooks
+  webhook(id: ID!): Webhook
+  webhooks(first: Int, after: String): [Webhook!]!
+  workflowEvent(id: ID!): WorkflowEvent
+  workflowEvents(
+    eventType: String
+    resourceType: String
+    first: Int
+    after: String
+  ): [WorkflowEvent!]!
+}
+
+# ─── Mutations ────────────────────────────────────────────────────────────────
+
+input CreateEmployeeInput {
+  firstName: String!
+  lastName: String!
+  workEmail: String!
+  employmentType: EmploymentType!
+  startDate: Date!
+  departmentId: ID
+  locationId: ID
+  managerId: ID
+  jobTitle: String
+  payType: PayType
+  annualSalary: Money
+  hourlyRate: Money
+}
+
+input UpdateEmployeeInput {
+  firstName: String
+  lastName: String
+  workEmail: String
+  departmentId: ID
+  locationId: ID
+  managerId: ID
+  jobTitle: String
+}
+
+input CreateTimeOffRequestInput {
+  employeeId: ID!
+  timeOffTypeId: ID!
+  startDate: Date!
+  endDate: Date!
+  note: String
+}
+
+input CreateExpenseInput {
+  expenseReportId: ID!
+  merchant: String
+  category: String
+  amount: Money!
+  currency: String!
+  expenseDate: Date!
+  note: String
+}
+
+input CreateExpenseReportInput {
+  employeeId: ID!
+  title: String!
+  currency: String!
+}
+
+input CreateWebhookInput {
+  url: String!
+  events: [String!]!
+  integrationId: ID
+}
+
+input UpdateWebhookInput {
+  url: String
+  events: [String!]
+  status: WebhookStatus
+}
+
+type Mutation {
+  # Employee lifecycle
+  createEmployee(input: CreateEmployeeInput!): Employee!
+  updateEmployee(id: ID!, input: UpdateEmployeeInput!): Employee!
+  terminateEmployee(id: ID!, terminationDate: Date!, reason: String): Employee!
+
+  # Time Off
+  createTimeOffRequest(input: CreateTimeOffRequestInput!): TimeOffRequest!
+  approveTimeOffRequest(id: ID!): TimeOffRequest!
+  denyTimeOffRequest(id: ID!, reason: String): TimeOffRequest!
+  cancelTimeOffRequest(id: ID!): TimeOffRequest!
+
+  # Onboarding / Offboarding
+  startOnboarding(employeeId: ID!): Onboarding!
+  completeTask(taskId: ID!): Task!
+
+  # Apps
+  provisionAppAccess(employeeId: ID!, appId: ID!, role: String): AppAccess!
+  deprovisionAppAccess(employeeId: ID!, appId: ID!): AppAccess!
+
+  # Spend
+  createExpenseReport(input: CreateExpenseReportInput!): ExpenseReport!
+  addExpense(input: CreateExpenseInput!): Expense!
+  submitExpenseReport(id: ID!): ExpenseReport!
+  approveExpenseReport(id: ID!): ExpenseReport!
+
+  # Webhooks
+  createWebhook(input: CreateWebhookInput!): Webhook!
+  updateWebhook(id: ID!, input: UpdateWebhookInput!): Webhook!
+  deleteWebhook(id: ID!): Boolean!
+}
+
+# ─── Subscriptions ────────────────────────────────────────────────────────────
+
+type Subscription {
+  employeeCreated: Employee!
+  employeeUpdated(id: ID): Employee!
+  employeeTerminated: Employee!
+  timeOffRequestStatusChanged(employeeId: ID): TimeOffRequest!
+  payrollFinalized(payScheduleId: ID): Payroll!
+  deviceStatusChanged(employeeId: ID): ManagedDevice!
+  appAccessChanged(employeeId: ID): AppAccess!
+  expenseReportStatusChanged(employeeId: ID): ExpenseReport!
+  workflowEventReceived(eventType: String): WorkflowEvent!
+}
