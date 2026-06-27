@@ -303,7 +303,7 @@ common:
   updated: '2026-05-08'
 - type: Integrations
   url: https://www.rippling.com/platform/integrations
-- type: LLMsTxt
+- type: LlmsText
   url: https://developer.rippling.com/llms.txt
 integrations:
 - name: Brokers
