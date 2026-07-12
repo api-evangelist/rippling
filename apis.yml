@@ -256,6 +256,10 @@ apis:
     time-off approved, payroll finalized, device assigned) for near real-time downstream
     integration.
 common:
+- type: DomainSecurity
+  url: security/rippling-domain-security.yml
+- type: Authentication
+  url: authentication/rippling-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/rippling
 - type: Website

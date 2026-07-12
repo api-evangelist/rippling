@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/rippling-openapi.yml
+summary:
+  types:
+  - http
+schemes:
+- name: BearerAuth
+  type: http
+  scheme: bearer
+  bearerFormat: JWT
+  description: |-
+    Rippling API tokens are issued via OAuth2 (or generated as personal/app
+    tokens) and supplied as `Authorization: Bearer <token>`.
+  sources:
+  - openapi/rippling-openapi.yml
