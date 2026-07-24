@@ -1,157 +1,189 @@
 openapi: 3.1.0
 info:
-  title: Rippling Platform API (Base API)
-  version: "1.0.0"
-  description: |
-    Rippling is a unified workforce platform spanning HR, IT, and Finance.
+  title: Rippling API (Base API) Platform API
+  version: 1.0.0
+  description: 'Rippling is a unified workforce platform spanning HR, IT, and Finance.
+
     The Base API (also known as the Platform API) exposes employee, company,
+
     department, team, work location, level, group, leave, custom field, and
+
     SAML/SSO data plus app provisioning helpers and ATS push endpoints.
+
     Authentication uses an OAuth2-issued bearer token (API token) supplied in
+
     the `Authorization: Bearer <token>` header.
+
+    '
   contact:
     name: Rippling Developer Portal
     url: https://developer.rippling.com/
   license:
     name: Proprietary
 servers:
-  - url: https://api.rippling.com
-    description: Rippling production API host
+- url: https://api.rippling.com
+  description: Rippling production API host
 security:
-  - BearerAuth: []
+- BearerAuth: []
+tags:
+- name: Platform
 paths:
   /platform/api/me:
     get:
       summary: Get the authenticated user / current token context
       operationId: getMe
       responses:
-        "200":
+        '200':
           description: Information about the authenticated user (token owner)
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/companies:
     get:
       summary: List companies accessible to the token
       operationId: getCompanies
       responses:
-        "200":
+        '200':
           description: Company list
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/company_activity:
     get:
       summary: List recent company activity events
       operationId: getCompanyActivity
       parameters:
-        - name: startDate
-          in: query
-          schema:
-            type: string
-            format: date-time
-        - name: limit
-          in: query
-          schema:
-            type: integer
-        - name: next
-          in: query
-          schema:
-            type: string
+      - name: startDate
+        in: query
+        schema:
+          type: string
+          format: date-time
+      - name: limit
+        in: query
+        schema:
+          type: integer
+      - name: next
+        in: query
+        schema:
+          type: string
       responses:
-        "200":
+        '200':
           description: Page of company activity events
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/employees:
     get:
       summary: List active employees
       operationId: getEmployees
       parameters:
-        - $ref: '#/components/parameters/Limit'
-        - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
       responses:
-        "200":
+        '200':
           description: Paginated list of employees
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/employees/include_terminated:
     get:
       summary: List employees including terminated workers
       operationId: getEmployeesIncludeTerminated
       parameters:
-        - $ref: '#/components/parameters/Limit'
-        - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
       responses:
-        "200":
+        '200':
           description: Paginated list of employees including terminated
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/employees/{employee_id}:
     get:
       summary: Get an employee by ID
       operationId: getEmployeeById
       parameters:
-        - $ref: '#/components/parameters/EmployeeId'
+      - $ref: '#/components/parameters/EmployeeId'
       responses:
-        "200":
+        '200':
           description: Employee record
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
-        "404":
+        '404':
           description: Employee not found
+      tags:
+      - Platform
   /platform/api/departments:
     get:
       summary: List departments
       operationId: getDepartments
       responses:
-        "200":
+        '200':
           description: List of departments
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/work_locations:
     get:
       summary: List work locations
       operationId: getWorkLocations
       responses:
-        "200":
+        '200':
           description: List of work locations
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/levels:
     get:
       summary: List career/job levels
       operationId: getLevels
       responses:
-        "200":
+        '200':
           description: List of levels
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/teams:
     get:
       summary: List teams
       operationId: getTeams
       responses:
-        "200":
+        '200':
           description: List of teams
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/custom_fields:
     get:
       summary: List custom field definitions
       operationId: getCustomFields
       responses:
-        "200":
+        '200':
           description: Custom fields metadata
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/groups:
     get:
       summary: List groups
       operationId: getGroups
       responses:
-        "200":
+        '200':
           description: List of groups
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
     post:
       summary: Create a group
       operationId: createGroup
@@ -171,26 +203,30 @@ paths:
                   items:
                     type: string
       responses:
-        "201":
+        '201':
           description: Group created
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/groups/{group_id}:
     get:
       summary: Get a group by ID
       operationId: getGroupById
       parameters:
-        - $ref: '#/components/parameters/GroupId'
+      - $ref: '#/components/parameters/GroupId'
       responses:
-        "200":
+        '200':
           description: Group record
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
     patch:
       summary: Partially update a group
       operationId: patchGroup
       parameters:
-        - $ref: '#/components/parameters/GroupId'
+      - $ref: '#/components/parameters/GroupId'
       requestBody:
         required: true
         content:
@@ -198,15 +234,17 @@ paths:
             schema:
               type: object
       responses:
-        "200":
+        '200':
           description: Group updated
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
     put:
       summary: Replace a group
       operationId: putGroup
       parameters:
-        - $ref: '#/components/parameters/GroupId'
+      - $ref: '#/components/parameters/GroupId'
       requestBody:
         required: true
         content:
@@ -214,40 +252,46 @@ paths:
             schema:
               type: object
       responses:
-        "200":
+        '200':
           description: Group replaced
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
     delete:
       summary: Delete a group
       operationId: deleteGroup
       parameters:
-        - $ref: '#/components/parameters/GroupId'
+      - $ref: '#/components/parameters/GroupId'
       responses:
-        "204":
+        '204':
           description: Group deleted
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/leave_requests:
     get:
       summary: List leave requests
       operationId: getLeaveRequests
       parameters:
-        - name: startDate
-          in: query
-          schema:
-            type: string
-            format: date
-        - name: endDate
-          in: query
-          schema:
-            type: string
-            format: date
+      - name: startDate
+        in: query
+        schema:
+          type: string
+          format: date
+      - name: endDate
+        in: query
+        schema:
+          type: string
+          format: date
       responses:
-        "200":
+        '200':
           description: List of leave requests
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
     post:
       summary: Create a leave request
       operationId: createLeaveRequest
@@ -271,20 +315,22 @@ paths:
                 reasonForLeave:
                   type: string
       responses:
-        "201":
+        '201':
           description: Leave request created
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/leave_requests/{leave_request_id}:
     patch:
       summary: Update a leave request
       operationId: patchLeaveRequest
       parameters:
-        - name: leave_request_id
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: leave_request_id
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         required: true
         content:
@@ -292,10 +338,12 @@ paths:
             schema:
               type: object
       responses:
-        "200":
+        '200':
           description: Leave request updated
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/leave_requests/process:
     post:
       summary: Approve or reject a leave request
@@ -311,12 +359,16 @@ paths:
                   type: string
                 action:
                   type: string
-                  enum: [APPROVE, REJECT]
+                  enum:
+                  - APPROVE
+                  - REJECT
       responses:
-        "200":
+        '200':
           description: Leave request decision recorded
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/leave_requests/cancel:
     post:
       summary: Cancel a leave request
@@ -331,70 +383,84 @@ paths:
                 leaveRequestId:
                   type: string
       responses:
-        "200":
+        '200':
           description: Leave request canceled
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/leave_balances:
     get:
       summary: List leave balances for all employees
       operationId: getLeaveBalances
       responses:
-        "200":
+        '200':
           description: Leave balances list
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/leave_balances/{employee_id}:
     get:
       summary: Get leave balance for one employee
       operationId: getLeaveBalance
       parameters:
-        - $ref: '#/components/parameters/EmployeeId'
+      - $ref: '#/components/parameters/EmployeeId'
       responses:
-        "200":
+        '200':
           description: Leave balance for the employee
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/company_leave_types:
     get:
       summary: List company-defined leave types
       operationId: getCompanyLeaveTypes
       responses:
-        "200":
+        '200':
           description: Company leave type catalog
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/saml/idp_metadata:
     get:
       summary: Retrieve SAML Identity Provider metadata for the company
       operationId: getSamlIdpMetadata
       responses:
-        "200":
+        '200':
           description: SAML IdP metadata XML
           content:
             application/xml:
               schema:
                 type: string
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/app/matching_users:
     get:
       summary: List users in the company that match the calling app
       operationId: getAppMatchingUsers
       responses:
-        "200":
+        '200':
           description: Matching users payload
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/mark_app_installed:
     post:
       summary: Mark the calling app as installed for the company
       operationId: markAppInstalled
       responses:
-        "200":
+        '200':
           description: Installation acknowledged
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
   /platform/api/ats/candidates/push_candidate:
     post:
       summary: Push an ATS candidate into Rippling
@@ -419,24 +485,14 @@ paths:
                   type: string
                   format: uri
       responses:
-        "201":
+        '201':
           description: Candidate created
-        "401":
+        '401':
           $ref: '#/components/responses/Unauthorized'
+      tags:
+      - Platform
 components:
   parameters:
-    EmployeeId:
-      name: employee_id
-      in: path
-      required: true
-      schema:
-        type: string
-    GroupId:
-      name: group_id
-      in: path
-      required: true
-      schema:
-        type: string
     Limit:
       name: limit
       in: query
@@ -449,6 +505,18 @@ components:
       schema:
         type: integer
         default: 0
+    GroupId:
+      name: group_id
+      in: path
+      required: true
+      schema:
+        type: string
+    EmployeeId:
+      name: employee_id
+      in: path
+      required: true
+      schema:
+        type: string
   responses:
     Unauthorized:
       description: Missing or invalid bearer token
@@ -464,6 +532,8 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: |
-        Rippling API tokens are issued via OAuth2 (or generated as personal/app
+      description: 'Rippling API tokens are issued via OAuth2 (or generated as personal/app
+
         tokens) and supplied as `Authorization: Bearer <token>`.
+
+        '
