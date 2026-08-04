@@ -1,0 +1,14 @@
+{
+  "provider": "rippling",
+  "sources": [
+    "rippling-platform-api-openapi.yml"
+  ],
+  "outputs": [
+    "rippling-platform-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
