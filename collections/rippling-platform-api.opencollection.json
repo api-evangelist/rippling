@@ -1,0 +1,477 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Rippling API (Base API) Platform API",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Platform",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get the authenticated user / current token context",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/me"
+          },
+          "docs": "Get the authenticated user / current token context"
+        },
+        {
+          "info": {
+            "name": "List companies accessible to the token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/companies"
+          },
+          "docs": "List companies accessible to the token"
+        },
+        {
+          "info": {
+            "name": "List recent company activity events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/company_activity",
+            "params": [
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "next",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List recent company activity events"
+        },
+        {
+          "info": {
+            "name": "List active employees",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/employees",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List active employees"
+        },
+        {
+          "info": {
+            "name": "List employees including terminated workers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/employees/include_terminated",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List employees including terminated workers"
+        },
+        {
+          "info": {
+            "name": "Get an employee by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/employees/:employee_id",
+            "params": [
+              {
+                "name": "employee_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get an employee by ID"
+        },
+        {
+          "info": {
+            "name": "List departments",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/departments"
+          },
+          "docs": "List departments"
+        },
+        {
+          "info": {
+            "name": "List work locations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/work_locations"
+          },
+          "docs": "List work locations"
+        },
+        {
+          "info": {
+            "name": "List career/job levels",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/levels"
+          },
+          "docs": "List career/job levels"
+        },
+        {
+          "info": {
+            "name": "List teams",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/teams"
+          },
+          "docs": "List teams"
+        },
+        {
+          "info": {
+            "name": "List custom field definitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/custom_fields"
+          },
+          "docs": "List custom field definitions"
+        },
+        {
+          "info": {
+            "name": "List groups",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/groups"
+          },
+          "docs": "List groups"
+        },
+        {
+          "info": {
+            "name": "Create a group",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.rippling.com/platform/api/groups",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a group"
+        },
+        {
+          "info": {
+            "name": "Get a group by ID",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a group by ID"
+        },
+        {
+          "info": {
+            "name": "Replace a group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.rippling.com/platform/api/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace a group"
+        },
+        {
+          "info": {
+            "name": "Partially update a group",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.rippling.com/platform/api/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Partially update a group"
+        },
+        {
+          "info": {
+            "name": "Delete a group",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.rippling.com/platform/api/groups/:group_id",
+            "params": [
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a group"
+        },
+        {
+          "info": {
+            "name": "List leave requests",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/leave_requests",
+            "params": [
+              {
+                "name": "startDate",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "endDate",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List leave requests"
+        },
+        {
+          "info": {
+            "name": "Create a leave request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.rippling.com/platform/api/leave_requests",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a leave request"
+        },
+        {
+          "info": {
+            "name": "Update a leave request",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.rippling.com/platform/api/leave_requests/:leave_request_id",
+            "params": [
+              {
+                "name": "leave_request_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a leave request"
+        },
+        {
+          "info": {
+            "name": "Approve or reject a leave request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.rippling.com/platform/api/leave_requests/process",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Approve or reject a leave request"
+        },
+        {
+          "info": {
+            "name": "Cancel a leave request",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.rippling.com/platform/api/leave_requests/cancel",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cancel a leave request"
+        },
+        {
+          "info": {
+            "name": "List leave balances for all employees",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/leave_balances"
+          },
+          "docs": "List leave balances for all employees"
+        },
+        {
+          "info": {
+            "name": "Get leave balance for one employee",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/leave_balances/:employee_id",
+            "params": [
+              {
+                "name": "employee_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get leave balance for one employee"
+        },
+        {
+          "info": {
+            "name": "List company-defined leave types",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/company_leave_types"
+          },
+          "docs": "List company-defined leave types"
+        },
+        {
+          "info": {
+            "name": "Retrieve SAML Identity Provider metadata for the company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/saml/idp_metadata"
+          },
+          "docs": "Retrieve SAML Identity Provider metadata for the company"
+        },
+        {
+          "info": {
+            "name": "List users in the company that match the calling app",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.rippling.com/platform/api/app/matching_users"
+          },
+          "docs": "List users in the company that match the calling app"
+        },
+        {
+          "info": {
+            "name": "Mark the calling app as installed for the company",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.rippling.com/platform/api/mark_app_installed"
+          },
+          "docs": "Mark the calling app as installed for the company"
+        },
+        {
+          "info": {
+            "name": "Push an ATS candidate into Rippling",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.rippling.com/platform/api/ats/candidates/push_candidate",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Push an ATS candidate into Rippling"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
