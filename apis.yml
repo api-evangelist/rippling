@@ -84,6 +84,9 @@ apis:
 - aid: rippling:rippling-teams-api
   name: Rippling Teams API
   tags:
+  - Team
+  - Org Structure
+  tags_raw:
   - Teams
   - Org Structure
   properties:
@@ -153,6 +156,10 @@ apis:
   name: Rippling Expenses API
   tags:
   - Expenses
+  - Reimbursement
+  - Spend
+  tags_raw:
+  - Expenses
   - Reimbursements
   - Spend
   properties:
@@ -221,6 +228,10 @@ apis:
 - aid: rippling:rippling-apps-api
   name: Rippling Apps API
   tags:
+  - Application
+  - SaaS Management
+  - Provisioning
+  tags_raw:
   - Apps
   - SaaS Management
   - Provisioning
@@ -268,6 +279,9 @@ apis:
 - aid: rippling:rippling-webhooks-api
   name: Rippling Webhooks API
   tags:
+  - Webhook
+  - Event
+  tags_raw:
   - Webhooks
   - Events
   properties:
