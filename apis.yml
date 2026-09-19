@@ -31,6 +31,16 @@ accessModel:
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/rippling.png
 tags:
+- Human Resources
+- HCM
+- Payroll
+- IT
+- Identity
+- SCIM
+- Devices
+- Spend Management
+- Identity Federation
+tags_raw:
 - HR
 - HCM
 - Payroll
@@ -106,6 +116,9 @@ apis:
 - aid: rippling:rippling-work-locations-api
   name: Rippling Work Locations API
   tags:
+  - Location
+  - Offices
+  tags_raw:
   - Locations
   - Offices
   properties:
