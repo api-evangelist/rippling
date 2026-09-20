@@ -51,7 +51,7 @@ tags_raw:
 - Spend Management
 - Identity Federation
 created: '2026-05-08'
-modified: '2026-09-16'
+modified: '2026-09-19'
 specificationVersion: '0.23'
 apis:
 - aid: rippling:rippling-platform-api
@@ -368,6 +368,9 @@ common:
   url: https://www.rippling.com/platform/integrations
 - type: LlmsText
   url: https://developer.rippling.com/llms.txt
+- name: MCP Documentation
+  url: https://developer.rippling.com/documentation/mcp
+  type: MCPDocumentation
 integrations:
 - name: Brokers
 - name: Accountants
