@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Rippling API (Base API) Platform API
   version: 1.0.0
@@ -12,9 +12,7 @@ info:
 
     Authentication uses an OAuth2-issued bearer token (API token) supplied in
 
-    the `Authorization: Bearer <token>` header.
-
-    '
+    the `Authorization: Bearer ` header.'
   contact:
     name: Rippling Developer Portal
     url: https://developer.rippling.com/
@@ -499,6 +497,12 @@ components:
       schema:
         type: integer
         default: 25
+    EmployeeId:
+      name: employee_id
+      in: path
+      required: true
+      schema:
+        type: string
     Offset:
       name: offset
       in: query
@@ -507,12 +511,6 @@ components:
         default: 0
     GroupId:
       name: group_id
-      in: path
-      required: true
-      schema:
-        type: string
-    EmployeeId:
-      name: employee_id
       in: path
       required: true
       schema:

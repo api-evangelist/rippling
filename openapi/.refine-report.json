@@ -1,7 +1,7 @@
 {
   "provider": "rippling",
   "sources": [
-    "rippling-platform-api-openapi.yml"
+    "_original/rippling-openapi.yml"
   ],
   "outputs": [
     "rippling-platform-api-openapi.yml"
@@ -9,6 +9,42 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "rippling-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "rippling-openapi.yml: tagged paths GET /platform/api/me -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/companies -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/company_activity -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/employees -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/employees/include_terminated -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/employees/{employee_id} -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/departments -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/work_locations -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/levels -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/teams -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/custom_fields -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/groups -> Platform",
+    "rippling-openapi.yml: tagged paths POST /platform/api/groups -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/groups/{group_id} -> Platform",
+    "rippling-openapi.yml: tagged paths PATCH /platform/api/groups/{group_id} -> Platform",
+    "rippling-openapi.yml: tagged paths PUT /platform/api/groups/{group_id} -> Platform",
+    "rippling-openapi.yml: tagged paths DELETE /platform/api/groups/{group_id} -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/leave_requests -> Platform",
+    "rippling-openapi.yml: tagged paths POST /platform/api/leave_requests -> Platform",
+    "rippling-openapi.yml: tagged paths PATCH /platform/api/leave_requests/{leave_request_id} -> Platform",
+    "rippling-openapi.yml: tagged paths POST /platform/api/leave_requests/process -> Platform",
+    "rippling-openapi.yml: tagged paths POST /platform/api/leave_requests/cancel -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/leave_balances -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/leave_balances/{employee_id} -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/company_leave_types -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/saml/idp_metadata -> Platform",
+    "rippling-openapi.yml: tagged paths GET /platform/api/app/matching_users -> Platform",
+    "rippling-openapi.yml: tagged paths POST /platform/api/mark_app_installed -> Platform",
+    "rippling-openapi.yml: tagged paths POST /platform/api/ats/candidates/push_candidate -> Platform",
+    "rippling-openapi.yml: declared missing tag: Platform",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "rippling-platform-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
