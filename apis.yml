@@ -54,22 +54,6 @@ created: '2026-05-08'
 modified: '2026-09-19'
 specificationVersion: '0.23'
 apis:
-- aid: rippling:rippling-platform-api
-  name: Rippling Platform API
-  tags:
-  - Platform
-  - HRIS
-  - Workforce
-  properties:
-  - url: https://developer.rippling.com/
-    type: Documentation
-  - url: https://developer.rippling.com/docs/rippling-api
-    type: APIReference
-  - url: graphql/rippling-graphql.md
-    type: GraphQL
-  description: The Rippling Platform API exposes core HRIS resources — companies, employees, departments,
-    work locations, custom fields, employment types, and compensation history — for partners building
-    HR-data integrations.
 - aid: rippling:rippling-employees-api
   name: Rippling Employees API
   tags:
@@ -210,6 +194,10 @@ apis:
   name: Rippling Recruiting API
   tags:
   - Recruiting
+  - Applicant Tracking
+  - Candidates
+  tags_raw:
+  - Recruiting
   - ATS
   - Candidates
   properties:
@@ -306,12 +294,20 @@ apis:
     finalized, device assigned) for near real-time downstream integration.
 - aid: rippling:rippling-platform-api
   name: Rippling Platform API
-  description: The Platform API from Rippling — 24 operation(s) for platform.
+  description: The Rippling Platform API exposes core HRIS resources — companies, employees, departments,
+    work locations, custom fields, employment types, and compensation history — for partners building HR-data
+    integrations.
   tags:
   - Platform
+  - HRIS
+  - Workforce
   properties:
   - type: OpenAPI
     url: openapi/rippling-platform-api-openapi.yml
+  - url: https://developer.rippling.com/
+    type: Documentation
+  - url: https://developer.rippling.com/docs/rippling-api
+    type: APIReference
 common:
 - type: AgenticAccess
   url: agentic-access/rippling-agentic-access.yml
