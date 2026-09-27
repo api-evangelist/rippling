@@ -497,12 +497,6 @@ components:
       schema:
         type: integer
         default: 25
-    EmployeeId:
-      name: employee_id
-      in: path
-      required: true
-      schema:
-        type: string
     Offset:
       name: offset
       in: query
@@ -511,6 +505,12 @@ components:
         default: 0
     GroupId:
       name: group_id
+      in: path
+      required: true
+      schema:
+        type: string
+    EmployeeId:
+      name: employee_id
       in: path
       required: true
       schema:
