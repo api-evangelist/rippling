@@ -309,6 +309,9 @@ apis:
   - url: https://developer.rippling.com/docs/rippling-api
     type: APIReference
 common:
+- type: CapabilityMap
+  url: capabilities/rippling-capability-edges.yml
+  name: Rippling Business Capability Map
 - type: AgenticAccess
   url: agentic-access/rippling-agentic-access.yml
 - type: DomainSecurity

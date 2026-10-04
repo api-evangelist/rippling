@@ -1,0 +1,27 @@
+slug: rippling
+provider: Rippling
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Platform
+  spec_file: rippling-platform-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.8
+  evidence: GET /platform/api/employees  getEmployees  List active employees; GET /platform/api/departments  getDepartments  List
+    departments; "exposes employee, company, department, team, work location, level, group, leave, custom
+    field"
+  reason: The operations read and expose core employee master data (employees incl. terminated, departments,
+    teams, job levels, work locations, custom fields), which is HR employee-record administration. L2
+    HR Operations Management fits best; some operations touch identity/SSO provisioning, hence not 0.95.
