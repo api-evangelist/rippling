@@ -490,6 +490,31 @@ paths:
       tags:
       - Platform
 components:
+  parameters:
+    Offset:
+      name: offset
+      in: query
+      schema:
+        type: integer
+        default: 0
+    GroupId:
+      name: group_id
+      in: path
+      required: true
+      schema:
+        type: string
+    EmployeeId:
+      name: employee_id
+      in: path
+      required: true
+      schema:
+        type: string
+    Limit:
+      name: limit
+      in: query
+      schema:
+        type: integer
+        default: 25
   responses:
     Unauthorized:
       description: Missing or invalid bearer token
@@ -500,31 +525,6 @@ components:
             properties:
               detail:
                 type: string
-  parameters:
-    EmployeeId:
-      name: employee_id
-      in: path
-      required: true
-      schema:
-        type: string
-    GroupId:
-      name: group_id
-      in: path
-      required: true
-      schema:
-        type: string
-    Offset:
-      name: offset
-      in: query
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      schema:
-        type: integer
-        default: 25
   securitySchemes:
     BearerAuth:
       type: http
