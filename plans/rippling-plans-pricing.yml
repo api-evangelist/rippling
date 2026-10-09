@@ -146,3 +146,75 @@ plans:
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - seat
+  units:
+  - seat
+  plans:
+  - name: Rippling Platform (Required Core)
+    access: other
+    model: seat
+    model_how: stated
+    units:
+    - seat
+    periods:
+    - month
+  - name: HR Cloud
+    access: other
+    model: seat
+    model_how: stated
+    units:
+    - seat
+    periods:
+    - month
+  - name: Payroll
+    access: other
+    model: seat
+    model_how: stated
+    units:
+    - seat
+    periods:
+    - month
+  - name: Global Payroll
+    access: other
+    model: seat
+    model_how: stated
+    units:
+    - seat
+    periods:
+    - month
+  - name: Employer of Record
+    access: other
+    model: seat
+    model_how: stated
+    units:
+    - seat
+    periods:
+    - month
+  - name: IT Cloud
+    access: other
+    model: seat
+    model_how: stated
+    units:
+    - seat
+    periods:
+    - month
+  - name: Spend (Expenses, Cards, Bill Pay)
+    access: other
+    model: seat
+    model_how: stated
+    units:
+    - seat
+    periods:
+    - month
+  - name: Recruiting
+    access: other
+    model: seat
+    model_how: stated
+    units:
+    - seat
+    periods:
+    - month
