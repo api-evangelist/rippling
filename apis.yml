@@ -309,6 +309,8 @@ apis:
   - url: https://developer.rippling.com/docs/rippling-api
     type: APIReference
 common:
+- type: PostmanWorkspace
+  url: https://www.postman.com/kinlaneapi/rippling/overview
 - type: CapabilityMap
   url: capabilities/rippling-capability-edges.yml
   name: Rippling Business Capability Map
